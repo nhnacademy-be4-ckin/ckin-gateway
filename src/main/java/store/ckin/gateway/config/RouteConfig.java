@@ -19,7 +19,7 @@ public class RouteConfig {
                 .route("ckin-coupon", r -> r.path("/coupon/**")
                         .uri(serverInfoProperties.getCouponUri()))
                 .route("ckin-api", r -> r.path("/api/**")
-                        .uri(serverInfoProperties.getApiUri()))
+                        .uri("lb://CKIN-API-SERVICE"))
                 .build();
     }
 }
