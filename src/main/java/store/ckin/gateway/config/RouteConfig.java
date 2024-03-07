@@ -42,6 +42,11 @@ public class RouteConfig {
                         .filters(authFilter())
                         .uri(serverInfoProperties.getCouponUri()))
                 .route("ckin-api", r -> r.path("/api/**")
+                        .uri(serverInfoProperties.getApiUri()))
+                .route("ckin-api", r -> r.path("/api/member/**")
+                        .filters(authFilter())
+                        .uri(serverInfoProperties.getApiUri()))
+                .route("ckin-api", r -> r.path("/api/admin/**")
                         .filters(authFilter())
                         .uri(serverInfoProperties.getApiUri()))
                 .build();

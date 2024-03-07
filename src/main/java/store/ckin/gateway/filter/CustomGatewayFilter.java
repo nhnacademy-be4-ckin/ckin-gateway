@@ -27,7 +27,7 @@ import store.ckin.gateway.util.JwtUtil;
 public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGatewayFilter.Config> {
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
-    public static final String PATH_VARIABLE_MEMBER_ID= "memberId";
+    public static final String PATH_VARIABLE_MEMBER_ID = "memberId";
 
     /**
      * CustomGatewayFilter 에 필요한 설정을 추가하는 클래스 입니다.
