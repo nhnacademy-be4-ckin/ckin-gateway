@@ -1,5 +1,7 @@
 package store.ckin.gateway.filter;
 
+import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -13,8 +15,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import store.ckin.gateway.util.JwtUtil;
 
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Gateway 에 오는 요청들을 처리하는 Filter 클래스 입니다.
@@ -27,6 +27,9 @@ import java.util.Objects;
 public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGatewayFilter.Config> {
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
+    /**
+     * CustomGatewayFilter 에 필요한 설정을 추가하는 클래스 입니다.
+     */
     @RequiredArgsConstructor
     public static class Config {
         private final RedisTemplate<String, Object> redisTemplate;
@@ -48,8 +51,8 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
             }
 
             String accessToken = Objects.requireNonNull(
-                    request.getHeaders()
-                            .getFirst(HEADER_AUTHORIZATION))
+                            request.getHeaders()
+                                    .getFirst(HEADER_AUTHORIZATION))
                     .replace(JwtUtil.AUTHORIZATION_SCHEME_BEARER, "");
 
             if (!JwtUtil.isValidate(accessToken)) {
@@ -62,7 +65,7 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
             Map<String, String> pathVariables =
                     exchange.getAttribute(ServerWebExchangeUtils.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
-            if(Objects.isNull(pathVariables)) {
+            if (Objects.isNull(pathVariables)) {
                 return rejectByUnauthorized(response);
             }
 
@@ -72,7 +75,7 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
                 return rejectByUnauthorized(response);
             }
 
-            if(!memberId.equals(memberIdVariable)) {
+            if (!memberId.equals(memberIdVariable)) {
                 return rejectByUnauthorized(response);
             }
 

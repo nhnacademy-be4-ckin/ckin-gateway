@@ -18,6 +18,12 @@ public class JwtUtil {
 
     public static final String AUTHORIZATION_SCHEME_BEARER = "Bearer ";
 
+    /**
+     * 토큰으로부터 UUID 를 추출하는 메서드 입니다.
+     *
+     * @param token JWT
+     * @return UUID
+     */
     public static String getUuid(String token) {
         return JWT.decode(token)
                 .getClaim("uuid")
