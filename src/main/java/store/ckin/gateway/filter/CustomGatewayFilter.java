@@ -27,6 +27,8 @@ import store.ckin.gateway.util.JwtUtil;
 public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGatewayFilter.Config> {
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
+    public static final String PATH_VARIABLE_MEMBER_ID= "memberId";
+
     /**
      * CustomGatewayFilter 에 필요한 설정을 추가하는 클래스 입니다.
      */
@@ -47,6 +49,8 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
 
             if (request.getHeaders()
                     .containsKey(HEADER_AUTHORIZATION)) {
+                log.debug("Token doesn't exist in HTTP Header : {}", HEADER_AUTHORIZATION);
+
                 return rejectByUnauthorized(response);
             }
 
@@ -56,6 +60,8 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
                     .replace(JwtUtil.AUTHORIZATION_SCHEME_BEARER, "");
 
             if (!JwtUtil.isValidate(accessToken)) {
+                log.debug("Invalid Token : {}", accessToken);
+
                 return rejectByUnauthorized(response);
             }
 
@@ -66,16 +72,22 @@ public class CustomGatewayFilter extends AbstractGatewayFilterFactory<CustomGate
                     exchange.getAttribute(ServerWebExchangeUtils.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
             if (Objects.isNull(pathVariables)) {
+                log.debug("Not exist pathVariables");
+
                 return rejectByUnauthorized(response);
             }
 
-            String memberIdVariable = pathVariables.get("memberId");
+            String memberIdVariable = pathVariables.get(PATH_VARIABLE_MEMBER_ID);
 
             if (memberIdVariable.isEmpty()) {
+                log.debug("Not found pathVariable : {}", PATH_VARIABLE_MEMBER_ID);
+
                 return rejectByUnauthorized(response);
             }
 
             if (!memberId.equals(memberIdVariable)) {
+                log.debug("Not match MemberId({}) and Path variable ({})", memberId, memberIdVariable);
+
                 return rejectByUnauthorized(response);
             }
 
