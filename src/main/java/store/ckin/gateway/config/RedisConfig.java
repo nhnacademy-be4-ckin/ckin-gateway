@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "spring.redis")
+@ConfigurationProperties(prefix = "ckin.redis")
 public class RedisConfig {
     private String host;
 
